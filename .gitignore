@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Project-specific
+runs/
+results/
+outputs/
+*.db
+*.xlsx
+*.log
+
+# Keep these if they are config, but usually data/ is ignored if it's large
+# data/
+
+# Ignore specific dirs mentioned in listing but not in README as code
+Выгрйзка символ/
+Выгрузка 6.1/
+golden/

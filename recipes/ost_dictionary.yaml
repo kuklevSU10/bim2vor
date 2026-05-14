@@ -1,0 +1,223 @@
+# OST-категории Revit → канонические имена + физический ли это объект
+# Используется в Layer 1 (Ingest) для фильтрации мусора
+
+categories:
+  # ====================================================================
+  # ФИЗИЧЕСКИЕ — несут объём/площадь, идут в маппинг ВОР
+  # ====================================================================
+  OST_Walls:
+    canonical: walls
+    russian: Стены
+    is_physical: true
+    default_unit: m3
+    secondary_units: [m2, length]
+
+  OST_Floors:
+    canonical: floors
+    russian: Перекрытия / Полы
+    is_physical: true
+    default_unit: m3
+    secondary_units: [m2]
+
+  OST_Roofs:
+    canonical: roofs
+    russian: Кровли
+    is_physical: true
+    default_unit: m2
+    secondary_units: [m3]
+
+  OST_Stairs:
+    canonical: stairs
+    russian: Лестницы
+    is_physical: true
+    default_unit: шт
+    secondary_units: [m2, m3]
+    # ВНИМАНИЕ: в SKLNK 9125 элементов но только 1% с volume — лестницы
+    # моделируются как контейнеры, нужен спец-recipe
+
+  OST_StairsLandings:
+    canonical: stairs_landings
+    russian: Лестничные площадки
+    is_physical: true
+    default_unit: m2
+
+  OST_StairsRailing:
+    canonical: railings
+    russian: Ограждения лестниц
+    is_physical: true
+    default_unit: m
+
+  OST_Doors:
+    canonical: doors
+    russian: Двери
+    is_physical: true
+    default_unit: шт
+
+  OST_Windows:
+    canonical: windows
+    russian: Окна
+    is_physical: true
+    default_unit: шт
+
+  OST_Columns:
+    canonical: columns
+    russian: Колонны (архитектурные)
+    is_physical: true
+    default_unit: m3
+
+  OST_StructuralColumns:
+    canonical: structural_columns
+    russian: Колонны несущие
+    is_physical: true
+    default_unit: m3
+
+  OST_StructuralFraming:
+    canonical: structural_framing
+    russian: Балки
+    is_physical: true
+    default_unit: m3
+
+  OST_StructuralFoundation:
+    canonical: foundation
+    russian: Фундаменты
+    is_physical: true
+    default_unit: m3
+
+  OST_Ceilings:
+    canonical: ceilings
+    russian: Потолки
+    is_physical: true
+    default_unit: m2
+
+  OST_GenericModel:
+    canonical: generic
+    russian: Обобщённая модель
+    is_physical: true
+    default_unit: шт
+    note: Может быть всё что угодно — требует доразметки по семействам
+
+  OST_Parts:
+    canonical: parts
+    russian: Части (расчленённые сборки)
+    is_physical: true
+    default_unit: m2
+
+  OST_CurtainWallPanels:
+    canonical: curtain_panels
+    russian: Витражные панели
+    is_physical: true
+    default_unit: m2
+
+  OST_CurtainWallMullions:
+    canonical: curtain_mullions
+    russian: Витражные импосты
+    is_physical: true
+    default_unit: m
+
+  OST_Mass:
+    canonical: mass
+    russian: Концептуальные массы
+    is_physical: false
+    default_unit: m3
+    note: Используется на ранних стадиях, в РД обычно нет
+
+  OST_Site:
+    canonical: site
+    russian: Площадка
+    is_physical: true
+    default_unit: m2
+
+  # ====================================================================
+  # ВСПОМОГАТЕЛЬНЫЕ — могут пригодиться для контекста, но не для расчёта объёмов
+  # ====================================================================
+  OST_Rooms:
+    canonical: rooms
+    russian: Помещения
+    is_physical: false   # сами не объёмы, но используются для отделки
+    default_unit: m2
+    use_for: [finishing_match, zone_filter]
+
+  OST_Areas:
+    canonical: areas
+    russian: Зоны
+    is_physical: false
+    default_unit: m2
+    use_for: [zone_filter]
+
+  OST_Levels:
+    canonical: levels
+    russian: Уровни
+    is_physical: false
+    excluded: true
+
+  OST_Grids:
+    canonical: grids
+    russian: Сетки
+    is_physical: false
+    excluded: true
+
+  # ====================================================================
+  # МУСОР — исключаются из обработки полностью
+  # ====================================================================
+  OST_SketchLines:
+    excluded: true
+    reason: технические линии эскизов
+
+  OST_RoomSeparationLines:
+    excluded: true
+    reason: виртуальные разделители помещений
+
+  OST_Lines:
+    excluded: true
+    reason: технические линии
+
+  OST_Materials:
+    excluded: true
+    reason: справочник материалов
+
+  OST_SunStudy:
+    excluded: true
+    reason: настройки солнечного исследования
+
+  OST_ImportObjectStyles:
+    excluded: true
+    reason: стили импорта
+
+  OST_PreviewLegendComponents:
+    excluded: true
+    reason: компоненты легенд
+
+  OST_Views:
+    excluded: true
+    reason: виды
+
+  OST_IOSModelGroups:
+    excluded: true
+    reason: группы
+
+  OST_HVAC_Load_Schedules:
+    excluded: true
+  OST_HVAC_Load_Space_Types:
+    excluded: true
+
+  OST_Phases:
+    excluded: true
+
+  OST_DesignOptions:
+    excluded: true
+
+  OST_SWallRectOpening:
+    canonical: wall_openings
+    russian: Проёмы в стенах
+    is_physical: false
+    excluded: false
+    note: |
+      Проёмы — НЕ объёмные сущности. Могут влиять на объём стен (вычитаются),
+      но в ВОР отдельно не идут. Используются для верификации объёмов стен.
+    use_for: [openings_check]
+
+  # ====================================================================
+  # СПЕЦИАЛЬНЫЕ — категории-СНКПП (квартиры) которые приходят как Category
+  # ====================================================================
+  # Эти приходят как "3M_88-108 м2" — это user-defined типы помещений/квартир
+  # Обрабатываются специальным правилом detect_apartment_types
