@@ -16,7 +16,6 @@ runs/
 results/
 outputs/
 *.db
-*.xlsx
 *.log
 
 # Keep these if they are config, but usually data/ is ignored if it's large
