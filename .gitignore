@@ -23,5 +23,5 @@ outputs/
 
 # Ignore specific dirs mentioned in listing but not in README as code
 Выгрйзка символ/
-Выгрузка 6.1/
+# Выгрузка 6.1/
 golden/
